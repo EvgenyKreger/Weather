@@ -18,13 +18,10 @@ function App() {
         if (data) {
             dispatch(citySlice.actions.setLocalStorage(JSON.parse(data)))
         }
-    }, [])
-
-
+    }, [])//LocalStorage getItem
     useEffect(() => {
         localStorage.setItem('cities', JSON.stringify(selectValue));
     },)  //LocalStorage setItem
-
 
     useEffect(() => {
         if (value.length > 2 && value.length < 20) {
@@ -32,7 +29,9 @@ function App() {
         }
     }, [value])
 
-    console.log(selectValue)
+
+
+
 
     useEffect(() => {
         const needName = Object.values(listCities).filter(el => el.full_name === value);
@@ -42,11 +41,13 @@ function App() {
         }
     }, [value])
 
-    useEffect(() => {
+    const updateCity=(id:number)=>{ const needIndex = selectValue.findIndex(el => el.id === id);
+        const item = selectValue[needIndex]
+       dispatch(fetchUpdateCity(item))
+    }
 
-            dispatch(fetchUpdateCity(selectValue))
 
-    }, [])
+
 
 
     return (
@@ -60,7 +61,7 @@ function App() {
                 {selectValue.map((el,index) => <CityWeatherForm key={Math.random()} id={el.id} index={index} name={el.name} time={el.time}
                                                           temp={el.main.temp} humidity={el.main.humidity }
                                                           pressure={el.main.pressure} wind={el.wind.speed}
-                                                          img={el.weather[0].icon}
+                                                          img={el.weather[0].icon} updateCity={updateCity}
                 />)}
             </div>
         </div>

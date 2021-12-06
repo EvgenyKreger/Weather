@@ -2,7 +2,7 @@ import {Button} from '@mui/material';
 import React, {FC} from 'react';
 import {useAppDispatch} from '../hooks/redux';
 import {citySlice} from '../store/reducers/CitySlice';
-import {fetchUpdateCity} from '../store/reducers/ActionCreators';
+
 
 export interface cityWeatherForm {
     id: number
@@ -14,6 +14,7 @@ export interface cityWeatherForm {
     pressure: number
     wind: number
     img: string
+    updateCity:(id:number)=>void
 }
 
 export const CityWeatherForm: FC<cityWeatherForm> = (props) => {
@@ -31,7 +32,7 @@ export const CityWeatherForm: FC<cityWeatherForm> = (props) => {
             <p>Последнее обновление данных: {props.time}  </p>
             <Button size="small" variant="contained" color="error"
                     onClick={() => dispatch(citySlice.actions.deleteCity(props.id))}>Удалить</Button>
-            <Button size="small" variant="contained" color="success" onClick={() => dispatch(fetchUpdateCity(props.id))}>Обновить</Button>
+            <Button size="small" variant="contained" color="success" onClick={() =>props.updateCity(props.id)}>Обновить</Button>
 
         </div>
     );

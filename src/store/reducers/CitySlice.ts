@@ -4,6 +4,7 @@ import {fetchCities, fetchUpdateCity, fetchWeatherCities} from './ActionCreators
 import moment from 'moment';
 
 
+
 interface CityState {
     listCities: Cities[],
     value: string,
@@ -39,7 +40,6 @@ export const citySlice = createSlice({
         deleteCity(state, action: PayloadAction<number>) {
          const index = state.selectValue.findIndex((el)=>el.id===action.payload)
             state.selectValue.splice(index,1)
-
 
         },
     },
@@ -87,10 +87,9 @@ export const citySlice = createSlice({
             state.isLoading = false;
             state.error = '';
             action.payload.time=moment().format('MM-DD-YYYY HH:mm:ss')
-            const filter = state.selectValue.filter((el)=>el.id === action.payload.id)
-            if(filter.length === 0){
-                state.selectValue.push(action.payload)
-            }
+            const index = state.selectValue.findIndex(el=>el.id===action.payload.id)
+            state.selectValue[index]=action.payload
+
         },
         [fetchUpdateCity.pending.type]: (state) => {
             state.isLoading = true;

@@ -45,9 +45,9 @@ export const fetchWeatherCities = createAsyncThunk(
 
 export const fetchUpdateCity = createAsyncThunk(
     'city/fetchUpdate',
-    async (newName:any, thunkAPI) =>{
+    async (item:any, thunkAPI) =>{
         try {
-            const response = await axios.get<Cities[]>(`https://api.openweathermap.org/data/2.5/weather?q=${newName.name},${newName.country}&appid=634d06f1747beb716b919ed5b586d4d0`)
+            const response = await axios.get<Cities[]>(`https://api.openweathermap.org/data/2.5/weather?id=${item.id}&appid=634d06f1747beb716b919ed5b586d4d0`)
             return response.data;
         } catch (e){
             return thunkAPI.rejectWithValue('Сервис "Оpenweather" не может найти город, введите название другого города')
