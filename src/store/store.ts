@@ -2,13 +2,12 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import cityReducer from './reducers/CitySlice'
 
 
-
 const rootReducer = combineReducers({
-  cityReducer
+    cityReducer
 })
-export const setupStore=()=>{
+export const setupStore = () => {
     return configureStore({
-        reducer:rootReducer
+        reducer: rootReducer
     })
 }
 

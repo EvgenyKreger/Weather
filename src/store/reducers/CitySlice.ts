@@ -3,8 +3,6 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {fetchCities, fetchUpdateCity, fetchWeatherCities} from './ActionCreators';
 import moment from 'moment';
 
-
-
 interface CityState {
     listCities: Cities[],
     value: string,
@@ -12,9 +10,9 @@ interface CityState {
     error: string,
     selectValue: General[],
     general: [],
-    check: Values[]
+    check: Values[],
+    disable:boolean
 }
-
 
 const initialState: CityState = {
     listCities: [],
@@ -23,11 +21,10 @@ const initialState: CityState = {
     error: '',
     selectValue: [],
     general: [],
-    check: []
+    check: [],
+    disable:false
 }
-
 export const citySlice = createSlice({
-
     name: 'city',
     initialState,
     reducers: {
@@ -38,14 +35,16 @@ export const citySlice = createSlice({
             state.selectValue = action.payload
         },
         deleteCity(state, action: PayloadAction<number>) {
-         const index = state.selectValue.findIndex((el)=>el.id===action.payload)
-            state.selectValue.splice(index,1)
-
+            state.disable = true
+            const index = state.selectValue.findIndex((el) => el.id === action.payload)
+            state.selectValue.splice(index, 1)
+            state.disable = false
         },
     },
     extraReducers: {
         [fetchCities.fulfilled.type]: (state, action: PayloadAction<[]>) => {
             state.isLoading = false;
+            state.disable = false
             state.error = ''
             state.listCities = action.payload;
 
@@ -58,26 +57,29 @@ export const citySlice = createSlice({
 
         [fetchCities.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false
+            state.disable = false
             state.error = action.payload
         }, /////
 
 
-
         [fetchWeatherCities.fulfilled.type]: (state, action: PayloadAction<Values>) => {
             state.isLoading = false;
+            state.disable = false;
             state.error = '';
-            action.payload.time=moment().format('MM-DD-YYYY HH:mm:ss')
-           const filter = state.selectValue.filter((el)=>el.id === action.payload.id)
-            if(filter.length === 0){
+            action.payload.time = moment().format('MM-DD-YYYY HH:mm:ss')
+            const filter = state.selectValue.filter((el) => el.id === action.payload.id)
+            if (filter.length === 0) {
                 state.selectValue.push(action.payload)
             }
         },
         [fetchWeatherCities.pending.type]: (state) => {
             state.isLoading = true;
+            state.disable = true;
             state.error = ''
         },
         [fetchWeatherCities.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false
+            state.disable = false
             state.error = action.payload
         },
         /////////////////////////////
@@ -85,18 +87,21 @@ export const citySlice = createSlice({
 
         [fetchUpdateCity.fulfilled.type]: (state, action: PayloadAction<Values>) => {
             state.isLoading = false;
+            state.disable = false;
             state.error = '';
-            action.payload.time=moment().format('MM-DD-YYYY HH:mm:ss')
-            const index = state.selectValue.findIndex(el=>el.id===action.payload.id)
-            state.selectValue[index]=action.payload
+            action.payload.time = moment().format('MM-DD-YYYY HH:mm:ss')
+            const index = state.selectValue.findIndex(el => el.id === action.payload.id)
+            state.selectValue[index] = action.payload
 
         },
         [fetchUpdateCity.pending.type]: (state) => {
             state.isLoading = true;
+            state.disable = true;
             state.error = ''
         },
         [fetchUpdateCity.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false
+            state.disable = false
             state.error = action.payload
         },
     }

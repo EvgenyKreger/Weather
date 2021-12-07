@@ -1,5 +1,4 @@
 export interface Cities {
-
     country: string,
     english: string,
     full_name: string,
@@ -21,13 +20,8 @@ export interface Cities {
     wiki: null,
 }
 
-
-
-
-
-
-export interface General{
-    time:string,
+export interface General {
+    time: string,
     base: string,
     clouds: cloudsType,
     cod: string,
@@ -35,7 +29,7 @@ export interface General{
     dt: number,
     id: number,
     main: mainType,
-    name:string,
+    name: string,
     sys: sysType,
     timezone: number,
     visibility: number,
@@ -44,14 +38,16 @@ export interface General{
 
 }
 
-interface cloudsType  {
+interface cloudsType {
     all: number
 }
-interface coordType  {
+
+interface coordType {
     lat: number,
     lon: number
 }
-interface mainType  {
+
+interface mainType {
     temp: number,
     feels_like: number,
     temp_min: number,
@@ -61,26 +57,30 @@ interface mainType  {
     sea_level: number,
     //grnd_level: number
 }
-interface sysType  {
+
+interface sysType {
     type: number,
     id: number,
     country: string,
     sunrise: number,
     sunset: number
 }
-interface weatherSetType  {
+
+interface weatherSetType {
     id: number,
     main: string,
     description: string,
     icon: string
 }
-interface windType  {
+
+interface windType {
     speed: number,
     deg: number,
     gust: number
 }
-export interface Values  {
-    time:string,
+
+export interface Values {
+    time: string,
     base: string,
     clouds: cloudsType,
     cod: string,
@@ -88,7 +88,7 @@ export interface Values  {
     dt: number,
     id: number,
     main: mainType,
-    name:string,
+    name: string,
     sys: sysType,
     timezone: number,
     visibility: number,
