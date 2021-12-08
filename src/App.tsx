@@ -31,6 +31,7 @@ function App() {
         const newName = {...needName[0]}
         if (newName.full_name) {
             dispatch(fetchWeatherCities(newName))
+            dispatch(citySlice.actions.russianName(newName.name))
         }
     }, [value, dispatch, listCities])
 
@@ -45,20 +46,26 @@ function App() {
             dispatch(fetchUpdateCity(item))
         }
     }
-   const deleteSelectedCity =(id:number) => {
-       dispatch(citySlice.actions.deleteCity(id))
+    const deleteSelectedCity = (id: number) => {
+        dispatch(citySlice.actions.deleteCity(id))
     }
 
     return (
         <div className={'App'}>
-            {isLoading && <LinearProgress color="success"/>}
-            <InputComplete updateAllCity={updateAllCity}/>
-            {error && <h1><Alert variant="filled" severity="error">
-                Сервис не может найти город, пожалуйста введите название другого города!
-            </Alert></h1>}
+            <div className={'header'}>
+                {isLoading && <LinearProgress color="success"/>}
+                {error && <h1><Alert variant="filled" severity="error">
+                    Сервис не может найти город, пожалуйста введите название другого города!
+                </Alert></h1>}
+
+                <InputComplete updateAllCity={updateAllCity}/>
+
+
+            </div>
+
             <div className={'city-block'}>
                 {selectValue.map((el, index) => <CityWeatherForm key={el.id} id={el.id} index={index}
-                                                                 name={el.name} time={el.time}
+                                                                 name={el.nameRu} time={el.time}
                                                                  temp={el.main.temp} humidity={el.main.humidity}
                                                                  pressure={el.main.pressure} wind={el.wind.speed}
                                                                  deg={el.wind.deg}

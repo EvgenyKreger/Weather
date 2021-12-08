@@ -11,7 +11,8 @@ interface CityState {
     selectValue: General[],
     general: [],
     check: Values[],
-    disable:boolean
+    disable:boolean,
+    name:string
 }
 
 const initialState: CityState = {
@@ -22,14 +23,19 @@ const initialState: CityState = {
     selectValue: [],
     general: [],
     check: [],
-    disable:false
+    disable:false,
+    name:''
 }
 export const citySlice = createSlice({
     name: 'city',
     initialState,
     reducers: {
         inputValue(state, action: PayloadAction<string>) {
-            state.value = action.payload
+
+                state.value = action.payload
+        },
+        russianName(state, action: PayloadAction<string>) {
+            state.name = action.payload
         },
         setLocalStorage(state, action: PayloadAction<[]>) {
             state.selectValue = action.payload
@@ -67,6 +73,7 @@ export const citySlice = createSlice({
             state.disable = false;
             state.error = '';
             action.payload.time = moment().format('MM-DD-YYYY HH:mm:ss')
+            action.payload.nameRu = state.name
             const filter = state.selectValue.filter((el) => el.id === action.payload.id)
             if (filter.length === 0) {
                 state.selectValue.push(action.payload)

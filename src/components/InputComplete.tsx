@@ -7,13 +7,15 @@ import {citySlice} from '../store/reducers/CitySlice';
 import {FC} from 'react';
 
 interface Input {
-    updateAllCity:()=>void
+    updateAllCity: () => void
 }
 
-const InputComplete:FC<Input> = (props) => {
+const InputComplete: FC<Input> = (props) => {
+
     const {disable} = useAppSelector(state => state.cityReducer)
     const dispatch = useAppDispatch();
     const {listCities, value} = useAppSelector(state => state.cityReducer)
+    console.log(value)
     return (
         <div className={'autocomplete'}>
             <Autocomplete
@@ -26,29 +28,38 @@ const InputComplete:FC<Input> = (props) => {
                         marginTop: 3,
                         marginRight: 2,
                         bgcolor: 'background.paper',
+                        border: "3px solid #D9DADF",
                         borderRadius: 2,
                         color: (theme) =>
                             theme.palette.getContrastText(theme.palette.background.paper),
                     },
+
                 }}
                 id="input-demo"
                 options={Object.values(listCities)}
-                noOptionsText={'Введите не менее 3 букв для автопоиска'}
+                noOptionsText={<span style={{color: 'red', fontSize: 18 }}><span
+                    style={{fontSize: 35, paddingRight: 20}}>⚠</span>Поле ввода принимает: «A-z» «A-я» «space» « , »
+                « () » « - » </span>}
                 getOptionLabel={(option) => option.full_name || ' '}
                 inputValue={value}
-                onInputChange={(event, newValue) => {
-                    dispatch(citySlice.actions.inputValue(newValue));
+
+                onInputChange={(event, value) => {
+                    if (!value.replace(/[A-Za-zA-Яа-яЕе/' (),-]/g, '')) {
+                        dispatch(citySlice.actions.inputValue(value))
+                    }
+
                 }}
                 renderInput={(params) => (
                     <div ref={params.InputProps.ref}>
-                        <input className={'search'} placeholder={'название города'}
-                               type="text" {...params.inputProps} />
+                        <input placeholder={'название города'}
+                               type="text"  {...params.inputProps} />
 
                     </div>
                 )}
             />
-            <div className={'updateAll'}   >
-                <Button variant="contained" color="success" size={'large'} onClick={props.updateAllCity} disabled={disable}>
+            <div className={'updateAll'}>
+                <Button variant="contained" color="success" size={'large'} onClick={props.updateAllCity}
+                        disabled={disable}>
                     Обновить все города
                 </Button>
 
@@ -56,4 +67,4 @@ const InputComplete:FC<Input> = (props) => {
         </div>);
 }
 
-export default InputComplete;
+export default React.memo(InputComplete);
