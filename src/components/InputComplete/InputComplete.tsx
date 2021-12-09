@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import {Button} from '@mui/material';
-import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {citySlice} from '../store/reducers/CitySlice';
-
+import {useAppDispatch, useAppSelector} from '../../myHooks/redux';
+import {citySlice} from '../../store/reducers/CitySlice';
+import style from './InputComplete.module.css'
 import {FC} from 'react';
 
 interface Input {
@@ -16,7 +16,7 @@ const InputComplete: FC<Input> = (props) => {
     const dispatch = useAppDispatch();
     const {listCities, value} = useAppSelector(state => state.cityReducer)
     return (
-        <div className={'autocomplete'}>
+        <div className={style.autocomplete}>
             <Autocomplete
                 sx={{
                     display: 'inline-block',
@@ -55,7 +55,7 @@ const InputComplete: FC<Input> = (props) => {
                     </div>
                 )}
             />
-            <div className={'updateAll'}>
+            <div className={style.updateAll}>
                 <Button variant="contained" color="success" size={'large'} onClick={props.updateAllCity}
                         disabled={disable}>
                     Обновить все города

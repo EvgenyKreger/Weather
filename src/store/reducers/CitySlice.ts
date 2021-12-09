@@ -1,4 +1,4 @@
-import {Cities, General, Values} from '../../models/Cities';
+import {Cities, General, Values} from '../../templates/Cities';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {fetchCities, fetchUpdateCity, fetchWeatherCities} from './ActionCreators';
 import moment from 'moment';
@@ -34,7 +34,6 @@ export const citySlice = createSlice({
     initialState,
     reducers: {
         inputValue(state, action: PayloadAction<string>) {
-
             state.value = action.payload
         }
         ,
@@ -72,7 +71,6 @@ export const citySlice = createSlice({
             state.disable = false
             state.error = action.payload
         },
-        /////
 
 
         [fetchWeatherCities.fulfilled.type]: (state, action: PayloadAction<Values>) => {
@@ -100,7 +98,6 @@ export const citySlice = createSlice({
             state.value = ''
             state.error = action.payload
         },
-        /////////////////////////////
 
 
         [fetchUpdateCity.fulfilled.type]: (state, action: PayloadAction<Values>) => {

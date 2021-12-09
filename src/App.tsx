@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {CityWeatherForm} from './components/CityWeatherForm'
-import InputComplete from './components/InputComplete';
-import {useAppDispatch, useAppSelector} from './hooks/redux';
+import CityWeatherForm from './components/CityWeatherForm/CityWeatherForm'
+import InputComplete from './components/InputComplete/InputComplete';
+import {useAppDispatch, useAppSelector} from './myHooks/redux';
 import {fetchCities, fetchUpdateCity, fetchWeatherCities} from './store/reducers/ActionCreators';
 import {citySlice} from './store/reducers/CitySlice';
 import {Alert, LinearProgress,} from '@mui/material';
@@ -18,16 +18,18 @@ function App() {
         if (data) {
             dispatch(citySlice.actions.setLocalStorage(JSON.parse(data)))
         }
-    }, [dispatch])
+    }, [dispatch])  //LocalStorage getItem
     useEffect(() => {
         localStorage.setItem('cities', JSON.stringify(selectValue));
-    },)  //LocalStorage setItem
+    }, [selectValue])  //LocalStorage setItem
+
 
     useEffect(() => {
         if (value.length > 2 && value.length < 20) {
             dispatch(fetchCities(value))
         }
     }, [value, dispatch])
+
 
     useEffect(() => {
         const needName = Object.values(listCities).filter(el => el.full_name === value);
@@ -38,20 +40,22 @@ function App() {
         }
     }, [value, dispatch, listCities])
 
-    const updateCity = (id: number) => {
+
+    const updateCity = useCallback((id: number) => {
         const needIndex = selectValue.findIndex(el => el.id === id);
         const item = selectValue[needIndex]
         dispatch(fetchUpdateCity(item))
-    }
-    const updateAllCity = () => {
+    }, [dispatch, selectValue])
+
+    const updateAllCity = useCallback(() => {
         for (let i = 0; i < selectValue.length; i++) {
             dispatch(fetchUpdateCity(selectValue[i]))
         }
-    }
+    }, [dispatch, selectValue])
 
-    const deleteSelectedCity = (id: number) => {
+    const deleteSelectedCity = useCallback((id: number) => {
         dispatch(citySlice.actions.deleteCity(id))
-    }
+    }, [dispatch])
 
     return (
         <div className={'App'}>
@@ -64,7 +68,7 @@ function App() {
             </div>
             <div className={'city-block'}>
                 {selectValue.map((el, index) => <CityWeatherForm key={el.id} id={el.id} index={index}
-                                                                 name={el.nameRu } time={el.time}
+                                                                 name={el.nameRu} time={el.time}
                                                                  temp={el.main.temp} humidity={el.main.humidity}
                                                                  pressure={el.main.pressure} wind={el.wind.speed}
                                                                  deg={el.wind.deg}

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {Cities} from '../../models/Cities';
+import {Cities} from '../../templates/Cities';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 export const fetchCities = createAsyncThunk(
