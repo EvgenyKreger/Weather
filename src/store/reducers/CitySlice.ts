@@ -11,8 +11,10 @@ interface CityState {
     selectValue: General[],
     general: [],
     check: Values[],
-    disable:boolean,
-    name:string
+    disable: boolean,
+    name: string,
+
+
 }
 
 const initialState: CityState = {
@@ -23,8 +25,9 @@ const initialState: CityState = {
     selectValue: [],
     general: [],
     check: [],
-    disable:false,
-    name:''
+    disable: false,
+    name: ''
+
 }
 export const citySlice = createSlice({
     name: 'city',
@@ -32,11 +35,13 @@ export const citySlice = createSlice({
     reducers: {
         inputValue(state, action: PayloadAction<string>) {
 
-                state.value = action.payload
-        },
+            state.value = action.payload
+        }
+        ,
         russianName(state, action: PayloadAction<string>) {
             state.name = action.payload
         },
+
         setLocalStorage(state, action: PayloadAction<[]>) {
             state.selectValue = action.payload
         },
@@ -52,6 +57,7 @@ export const citySlice = createSlice({
             state.isLoading = false;
             state.disable = false
             state.error = ''
+            state.listCities = []
             state.listCities = action.payload;
 
         },
@@ -65,17 +71,20 @@ export const citySlice = createSlice({
             state.isLoading = false
             state.disable = false
             state.error = action.payload
-        }, /////
+        },
+        /////
 
 
         [fetchWeatherCities.fulfilled.type]: (state, action: PayloadAction<Values>) => {
             state.isLoading = false;
             state.disable = false;
             state.error = '';
-            action.payload.time = moment().format('MM-DD-YYYY HH:mm:ss')
-            action.payload.nameRu = state.name
+            state.listCities = []
+            state.value = ''
             const filter = state.selectValue.filter((el) => el.id === action.payload.id)
             if (filter.length === 0) {
+                action.payload.time = moment().format('MM-DD-YYYY HH:mm:ss')
+                action.payload.nameRu = state.name
                 state.selectValue.push(action.payload)
             }
         },
@@ -87,6 +96,8 @@ export const citySlice = createSlice({
         [fetchWeatherCities.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false
             state.disable = false
+            state.listCities = []
+            state.value = ''
             state.error = action.payload
         },
         /////////////////////////////
@@ -98,6 +109,7 @@ export const citySlice = createSlice({
             state.error = '';
             action.payload.time = moment().format('MM-DD-YYYY HH:mm:ss')
             const index = state.selectValue.findIndex(el => el.id === action.payload.id)
+            action.payload.nameRu = state.selectValue[index].nameRu
             state.selectValue[index] = action.payload
 
         },
@@ -111,6 +123,7 @@ export const citySlice = createSlice({
             state.disable = false
             state.error = action.payload
         },
+
     }
 })
 

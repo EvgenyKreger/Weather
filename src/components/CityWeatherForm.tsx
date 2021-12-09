@@ -15,7 +15,7 @@ export interface cityWeatherForm {
     deg: number
     img: string
     updateCity: (id: number) => void
-    deleteSelectedCity:(id:number)=>void
+    deleteSelectedCity: (id: number) => void
 }
 
 export const CityWeatherForm: FC<cityWeatherForm> = (props) => {
@@ -36,7 +36,7 @@ export const CityWeatherForm: FC<cityWeatherForm> = (props) => {
             <p>Сила и направление ветра: {props.wind} м/с <span style={{color: '#d32f2f'}}>{result}</span></p>
             <p>Последнее обновление данных: {props.time}  </p>
             <Button size="small" variant="contained" color="error" disabled={disable}
-                    onClick={() =>props.deleteSelectedCity(props.id)}>Удалить</Button> <span> </span>
+                    onClick={() => props.deleteSelectedCity(props.id)}>Удалить</Button> <span> </span>
             <Button size="small" variant="contained" color="success" disabled={disable}
                     onClick={() => props.updateCity(props.id)}>Обновить</Button>
         </div>

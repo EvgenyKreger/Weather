@@ -12,6 +12,7 @@ function App() {
 
     const dispatch = useAppDispatch();
     const {value, error, isLoading, listCities, selectValue} = useAppSelector(state => state.cityReducer)
+
     useEffect(() => {
         const data = localStorage.getItem('cities');
         if (data) {
@@ -21,11 +22,13 @@ function App() {
     useEffect(() => {
         localStorage.setItem('cities', JSON.stringify(selectValue));
     },)  //LocalStorage setItem
+
     useEffect(() => {
         if (value.length > 2 && value.length < 20) {
             dispatch(fetchCities(value))
         }
     }, [value, dispatch])
+
     useEffect(() => {
         const needName = Object.values(listCities).filter(el => el.full_name === value);
         const newName = {...needName[0]}
@@ -42,10 +45,10 @@ function App() {
     }
     const updateAllCity = () => {
         for (let i = 0; i < selectValue.length; i++) {
-            const item = selectValue[i]
-            dispatch(fetchUpdateCity(item))
+            dispatch(fetchUpdateCity(selectValue[i]))
         }
     }
+
     const deleteSelectedCity = (id: number) => {
         dispatch(citySlice.actions.deleteCity(id))
     }
@@ -57,15 +60,11 @@ function App() {
                 {error && <h1><Alert variant="filled" severity="error">
                     Сервис не может найти город, пожалуйста введите название другого города!
                 </Alert></h1>}
-
                 <InputComplete updateAllCity={updateAllCity}/>
-
-
             </div>
-
             <div className={'city-block'}>
                 {selectValue.map((el, index) => <CityWeatherForm key={el.id} id={el.id} index={index}
-                                                                 name={el.nameRu} time={el.time}
+                                                                 name={el.nameRu } time={el.time}
                                                                  temp={el.main.temp} humidity={el.main.humidity}
                                                                  pressure={el.main.pressure} wind={el.wind.speed}
                                                                  deg={el.wind.deg}

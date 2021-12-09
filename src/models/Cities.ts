@@ -22,7 +22,7 @@ export interface Cities {
 
 export interface General {
     time: string,
-    nameRu:string,
+    nameRu: string ,
     base: string,
     clouds: cloudsType,
     cod: string,
@@ -82,7 +82,7 @@ interface windType {
 
 export interface Values {
     time: string,
-    nameRu:string,
+    nameRu: string,
     base: string,
     clouds: cloudsType,
     cod: string,
